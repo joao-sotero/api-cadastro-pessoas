@@ -1,4 +1,4 @@
-package com.api.cadastro.usuario.personapi.dto;
+package com.api.cadastro.usuario.personapi.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
