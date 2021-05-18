@@ -1,9 +1,13 @@
 package com.api.cadastro.usuario.personapi.mapper;
 
 import com.api.cadastro.usuario.personapi.dto.request.PersonDTO;
+import com.api.cadastro.usuario.personapi.dto.request.PersonDTO.PersonDTOBuilder;
 import com.api.cadastro.usuario.personapi.dto.request.PhoneDTO;
+import com.api.cadastro.usuario.personapi.dto.request.PhoneDTO.PhoneDTOBuilder;
 import com.api.cadastro.usuario.personapi.entity.Person;
+import com.api.cadastro.usuario.personapi.entity.Person.PersonBuilder;
 import com.api.cadastro.usuario.personapi.entity.Phone;
+import com.api.cadastro.usuario.personapi.entity.Phone.PhoneBuilder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,7 +16,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-17T14:10:02-0300",
+    date = "2021-05-17T14:30:17-0300",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.9 (Oracle Corporation)"
 )
 public class PersonMapperImpl implements PersonMapper {
@@ -23,18 +27,38 @@ public class PersonMapperImpl implements PersonMapper {
             return null;
         }
 
-        Person person = new Person();
+        PersonBuilder person = Person.builder();
 
         if ( personDTO.getBirthDate() != null ) {
-            person.setBirthDate( LocalDate.parse( personDTO.getBirthDate(), DateTimeFormatter.ofPattern( "dd-MM-yyyy" ) ) );
+            person.birthDate( LocalDate.parse( personDTO.getBirthDate(), DateTimeFormatter.ofPattern( "dd-MM-yyyy" ) ) );
         }
-        person.setId( personDTO.getId() );
-        person.setFirstName( personDTO.getFirstName() );
-        person.setLastName( personDTO.getLastName() );
-        person.setCpf( personDTO.getCpf() );
-        person.setPhones( phoneDTOListToPhoneList( personDTO.getPhones() ) );
+        person.id( personDTO.getId() );
+        person.firstName( personDTO.getFirstName() );
+        person.lastName( personDTO.getLastName() );
+        person.cpf( personDTO.getCpf() );
+        person.phones( phoneDTOListToPhoneList( personDTO.getPhones() ) );
 
-        return person;
+        return person.build();
+    }
+
+    @Override
+    public PersonDTO toDTO(Person person) {
+        if ( person == null ) {
+            return null;
+        }
+
+        PersonDTOBuilder personDTO = PersonDTO.builder();
+
+        personDTO.id( person.getId() );
+        personDTO.firstName( person.getFirstName() );
+        personDTO.lastName( person.getLastName() );
+        personDTO.cpf( person.getCpf() );
+        if ( person.getBirthDate() != null ) {
+            personDTO.birthDate( DateTimeFormatter.ISO_LOCAL_DATE.format( person.getBirthDate() ) );
+        }
+        personDTO.phones( phoneListToPhoneDTOList( person.getPhones() ) );
+
+        return personDTO.build();
     }
 
     protected Phone phoneDTOToPhone(PhoneDTO phoneDTO) {
@@ -42,13 +66,13 @@ public class PersonMapperImpl implements PersonMapper {
             return null;
         }
 
-        Phone phone = new Phone();
+        PhoneBuilder phone = Phone.builder();
 
-        phone.setId( phoneDTO.getId() );
-        phone.setType( phoneDTO.getType() );
-        phone.setNumber( phoneDTO.getNumber() );
+        phone.id( phoneDTO.getId() );
+        phone.type( phoneDTO.getType() );
+        phone.number( phoneDTO.getNumber() );
 
-        return phone;
+        return phone.build();
     }
 
     protected List<Phone> phoneDTOListToPhoneList(List<PhoneDTO> list) {
@@ -59,6 +83,33 @@ public class PersonMapperImpl implements PersonMapper {
         List<Phone> list1 = new ArrayList<Phone>( list.size() );
         for ( PhoneDTO phoneDTO : list ) {
             list1.add( phoneDTOToPhone( phoneDTO ) );
+        }
+
+        return list1;
+    }
+
+    protected PhoneDTO phoneToPhoneDTO(Phone phone) {
+        if ( phone == null ) {
+            return null;
+        }
+
+        PhoneDTOBuilder phoneDTO = PhoneDTO.builder();
+
+        phoneDTO.id( phone.getId() );
+        phoneDTO.type( phone.getType() );
+        phoneDTO.number( phone.getNumber() );
+
+        return phoneDTO.build();
+    }
+
+    protected List<PhoneDTO> phoneListToPhoneDTOList(List<Phone> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<PhoneDTO> list1 = new ArrayList<PhoneDTO>( list.size() );
+        for ( Phone phone : list ) {
+            list1.add( phoneToPhoneDTO( phone ) );
         }
 
         return list1;
