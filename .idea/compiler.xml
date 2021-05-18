@@ -16,7 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="personapi" target="1.8" />
+      <module name="personapi" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
