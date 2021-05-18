@@ -46,9 +46,20 @@ public class PersonService {
 
     @SneakyThrows
     public PersonDTO findById(Long id)  {
-        Person person = personRepository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
+        Person person = verifyIfExists(id);
         return personMapper.toDTO(person);
+    }
+
+    @SneakyThrows
+    public void delete(Long id) {
+         verifyIfExists(id);
+        personRepository.deleteById(id);
+    }
+
+    @SneakyThrows
+    private Person verifyIfExists(Long id)  {
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
     }
 }
 
