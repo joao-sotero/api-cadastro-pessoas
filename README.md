@@ -1,3 +1,4 @@
+Sistema para gerencimento de pessoas em API REST com Spring Boot
 
 Para executar o projeto no terminal, digite o seguinte comando:
 
